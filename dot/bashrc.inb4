@@ -1,3 +1,6 @@
+####################################################################
+#   Original Ubuntu default bashrc (clean this up as necessary)
+
 # ~/.bashrc: executed by bash(1) for non-login shells.
 # see /usr/share/doc/bash/examples/startup-files (in the package bash-doc)
 # for examples
@@ -34,11 +37,6 @@ shopt -s checkwinsize
 if [ -z "${debian_chroot:-}" ] && [ -r /etc/debian_chroot ]; then
     debian_chroot=$(cat /etc/debian_chroot)
 fi
-
-# set a fancy prompt (non-color, unless we know we "want" color)
-case "$TERM" in
-    xterm-color|*-256color) color_prompt=yes;;
-esac
 
 # enable color support of ls and also add handy aliases
 if [ -x /usr/bin/dircolors ]; then
@@ -83,3 +81,66 @@ if ! shopt -oq posix; then
     . /etc/bash_completion
   fi
 fi
+
+####################################################################
+#   prompt stuff stolen from cjs
+
+#   Variables used by the prompt. These avoid running the commands every time
+#   we print the prompt, for slight efficiency gain. We never export them
+#   because other processes should do their own checks on their environment.
+__cjs_prompt_user="$(id -u -n)"
+#   We consider ourselves to be "containerized" if our root process
+#   does not have the word "init" in its path.
+__cjs_prompt_container=
+[[ -e /proc/1/cmdline ]] && {
+    case $(tr '\000' ' ' < /proc/1/cmdline) in
+        */systemd\ --system*)       ;;
+        *init*)                     ;;
+        *)                          __cjs_prompt_container=1;;
+    esac
+}
+
+__cjs_prompt() {
+    local exitcode="$?"
+
+    #   \001…\002 tells readline not to count these as printing chars.
+    #   This can be done as \[…\] in some circumstances, but not all.
+    #   See: https://stackoverflow.com/q/24839271/107294
+    local      bold=$'\001\E[01m\002'
+    local underline=$'\001\E[01m\002'
+    local       inv=$'\001\E[07m\002'
+    local       red=$'\001\E[31m\002'
+    local     green=$'\001\E[32m\002'
+    local    yellow=$'\001\E[33m\002'
+    local      blue=$'\001\E[34m\002'
+    local  bgyellow=$'\001\E[43m\002'
+    local   bgwhite=$'\001\E[47m\002'
+    local   boldred=$'\001\E[1;31m\002'
+    local      none=$'\001\E[m\002'         # At end so `declare -f` looks ok
+    #   Above is mostly documentation for further use elsewhere;
+    #   we should probably extract it.
+    local    pcolor="$blue$bold"
+
+    local exitprint
+    case "$exitcode" in
+        0) exitprint='' ;;
+        *) exitprint="${red}${exitcode}${none} ";;
+    esac
+
+    local pp=''                                         # prompt prefix for:
+    [[ -n $__cjs_prompt_container ]] && pp="${pp}c"     # - in container
+    [[ -n $STY ]] && pp="${pp}s"                        # - screeen
+
+    if [[ $EUID -eq 0 ]]; then
+        echo "$exitprint$pcolor$pp#$none "
+    elif [[ $__cjs_prompt_user =~ ^(geebee|cjs|curt|c?samp) ]]; then
+        echo "$exitprint$pcolor$pp\$$none "
+    else
+        echo "$__cjs_prompt_user $exitprint$pcolor$pp\$$none "
+    fi
+}
+PS1='$(__cjs_prompt)'
+
+####################################################################
+#   geebee bashrc
+
