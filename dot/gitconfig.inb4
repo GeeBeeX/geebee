@@ -2,6 +2,9 @@
 	email = greg.bartholomaus@gmail.com
 	name = greg.bartholomaus
 
+[init]
+	defaultbranch = main
+
 [url "git@github.com.:"]
 	pushInsteadOf = https://github.com
 [url "git@gitlab.com.:"]
