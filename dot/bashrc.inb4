@@ -144,3 +144,7 @@ PS1='$(__cjs_prompt)'
 ####################################################################
 #   geebee bashrc
 
+#   Python multi-version installation manager
+#   XXX .pythonz/etc/bashrc sets a whole pile of vars we should make local
+[[ -s ~/.pythonz/etc/bashrc ]] && . ~/.pythonz/etc/bashrc
+pz() { pythonz "$@"; }
