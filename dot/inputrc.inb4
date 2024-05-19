@@ -1,1 +1,15 @@
+set editing-mode vi
+
 set completion-ignore-case on
+
+####################################################################
+#   Insert mode bindings
+
+set keymap vi-insert
+Control-l: redraw-current-line
+
+####################################################################
+#   Command mode bindings
+
+set keymap vi-command
+Control-l: redraw-current-line
