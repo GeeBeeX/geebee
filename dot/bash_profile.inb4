@@ -8,6 +8,7 @@ export VISUAL="$EDITOR"
 export PAGER=less
 export LESS='-aeFimsXR -j.15'
 export SUDO_PROMPT="sudo pw for %u@%H: "
+export PYTHONPYCACHEPREFIX=$HOME/.cache/pycache__
 
 #   GNU ls fixes: turn off damn colors and force literal quoting.
 #   GNU coreutils 8.28 turned on shell quoting (at least when using -F)
