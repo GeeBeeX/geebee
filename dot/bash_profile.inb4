@@ -1,6 +1,7 @@
 ####################################################################
 #   Environment variables
 
+[[ $PATH = */.local/bin* ]] || PATH=~/.local/bin:"$PATH"
 export LANG=en_US.UTF-8
 export LC_COLLATE=C         # I prefer to sort in case-sensitive ASCII order
 export EDITOR=vim
