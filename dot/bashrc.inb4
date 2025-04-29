@@ -148,3 +148,6 @@ PS1='$(__cjs_prompt)'
 #   XXX .pythonz/etc/bashrc sets a whole pile of vars we should make local
 [[ -s ~/.pythonz/etc/bashrc ]] && . ~/.pythonz/etc/bashrc
 pz() { pythonz "$@"; }
+
+[[ -r ~/Coding/pactivate/pae ]] \
+    && . ~/Coding/pactivate/pae
